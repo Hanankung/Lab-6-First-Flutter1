@@ -198,7 +198,6 @@ class _HomeAdminState extends State<HomeAdmin> {
                             borderRadius: BorderRadius.circular(15), // ขอบโค้งมน
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.black12,
                                 blurRadius: 10,
                                 spreadRadius: 5,
                                 offset: Offset(0, 5),

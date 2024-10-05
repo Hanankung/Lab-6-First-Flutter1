@@ -1,1 +1,1 @@
-var apiURI = 'http://10.0.2.2:3000';
+var apiURI = 'http://10.104.8.167:3000';

@@ -56,187 +56,181 @@ class _AddProductPageState extends State<AddProductPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+Widget build(BuildContext context) {
+  final height = MediaQuery.of(context).size.height;
+  final width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      body: Container(
-        height: height,
-        child: Stack(
-          children: [
-            // Background
-            Positioned(
-              top: -height * .15,
-              right: -width * .4,
-              child: Transform.rotate(
-                angle: -pi / 3.5,
-                child: ClipPath(
-                  clipper: ClipPainter(),
-                  child: Container(
-                    height: height * .5,
-                    width: width,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: [
-                          Color(0xffE9EFEC),
-                          Color(0xffFABC3F),
-                        ],
+  return Scaffold(
+    body: Container(
+      height: height,  // กำหนดให้ Container มีขนาดเต็มหน้าจอ
+      width: width,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Color(0xffE8EAF6), Color.fromARGB(255, 174, 85, 175)], // กำหนดสีพื้นหลังแบบ Gradient
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: Stack(
+        children: [
+          // ฟอร์ม
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: height * .1),
+                  RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      text: 'NEW',
+                      style: TextStyle(
+                        fontSize: 35,
+                        fontWeight: FontWeight.w900,
+                        color: Color(0xffC7253E),
+                      ),
+                      children: [
+                        TextSpan(
+                          text: ' Products',
+                          style: TextStyle(
+                            color: Color(0xff3E4A89),
+                            fontSize: 35,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  Card(
+                    elevation: 8,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          children: <Widget>[
+                            _buildTextField(
+                              label: 'ชื่อสินค้า',
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณากรอกชื่อสินค้า';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                productName = value!;
+                              },
+                            ),
+                            SizedBox(height: 16),
+                            _buildTextField(
+                              label: 'ประเภทสินค้า',
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณากรอกประเภทสินค้า';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                productType = value!;
+                              },
+                            ),
+                            SizedBox(height: 16),
+                            _buildTextField(
+                              label: 'ราคา',
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณากรอกราคา';
+                                }
+                                if (int.tryParse(value) == null) {
+                                  return 'กรุณากรอกจำนวนเต็มที่ถูกต้อง';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                price = double.parse(value!);
+                              },
+                            ),
+                            SizedBox(height: 16),
+                            _buildTextField(
+                              label: 'หน่วย',
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณากรอกหน่วย';
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                unit = value!;
+                              },
+                            ),
+                            SizedBox(height: 30),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: _addNewProduct,
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color.fromARGB(255, 23, 130, 17),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 24.0, vertical: 12.0),
+                                    child: Text(
+                                      'บันทึก',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pushReplacementNamed(
+                                        context, '/admin');
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Color(0xff676767),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 24.0, vertical: 12.0),
+                                    child: Text(
+                                      'ยกเลิก',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
+                ],
               ),
             ),
-            // Form content
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(height: height * .1),
-                    RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        text: 'เพิ่ม',
-                        style: TextStyle(
-                          fontSize: 35,
-                          fontWeight: FontWeight.w900,
-                          color: Color(0xffC7253E),
-                        ),
-                        children: [
-                          TextSpan(
-                            text: 'สินค้าใหม่',
-                            style: TextStyle(
-                                color: Color(0xffE85C0D), fontSize: 35),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 30),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: <Widget>[
-                          _buildTextField(
-                            label: 'ชื่อสินค้า',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกชื่อสินค้า';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              productName = value!;
-                            },
-                          ),
-                          SizedBox(height: 16),
-                          _buildTextField(
-                            label: 'ประเภทสินค้า',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกประเภทสินค้า';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              productType = value!;
-                            },
-                          ),
-                          SizedBox(height: 16),
-                          _buildTextField(
-                            label: 'ราคา',
-                            keyboardType: TextInputType.number,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกราคา';
-                              }
-                              if (int.tryParse(value) == null) {
-                                return 'กรุณากรอกจำนวนเต็มที่ถูกต้อง';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              price = double.parse(value!);
-                            },
-                          ),
-                          SizedBox(height: 16),
-                          _buildTextField(
-                            label: 'หน่วย',
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณากรอกหน่วย';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              unit = value!;
-                            },
-                          ),
-                          SizedBox(height: 30),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              ElevatedButton(
-                                onPressed: _addNewProduct,
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xff821131),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 24.0, vertical: 12.0),
-                                  child: Text(
-                                    'บันทึก',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pushReplacementNamed(context,
-                                      '/admin'); // เปลี่ยนไปยังหน้าแสดงสินค้า
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor:
-                                      Color.fromRGBO(103, 103, 103, 1),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 24.0, vertical: 12.0),
-                                  child: Text(
-                                    'ยกเลิก',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   Widget _buildTextField({
     required String label,
